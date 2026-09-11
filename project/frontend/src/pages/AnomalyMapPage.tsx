@@ -9,6 +9,7 @@ import {
   useMap
 } from 'react-leaflet';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { 
   Compass, 
   Filter, 
@@ -70,6 +71,7 @@ export const AnomalyMapPage: React.FC<AnomalyMapPageProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedFilter, setSelectedFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [basemap, setBasemap] = useState<'osm' | 'dark' | 'satellite'>('osm');
   const [focusedLocation, setFocusedLocation] = useState<{ lat: number; lng: number }>({
     lat: 11.0168,
     lng: 76.9558
@@ -164,6 +166,41 @@ export const AnomalyMapPage: React.FC<AnomalyMapPageProps> = ({
               </button>
             ))}
           </div>
+
+          {/* Leaflet Basemap Switcher */}
+          <div className="flex items-center gap-1 bg-slate-900/80 p-1 rounded-xl border border-slate-800">
+            <Layers className="w-3.5 h-3.5 text-cyan-400 ml-1.5 mr-1" />
+            <button
+              onClick={() => setBasemap('osm')}
+              className={`px-2 py-1 rounded-lg text-xs font-mono transition-all ${
+                basemap === 'osm'
+                  ? 'bg-cyan-500 text-slate-950 font-bold shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              Leaflet OSM
+            </button>
+            <button
+              onClick={() => setBasemap('satellite')}
+              className={`px-2 py-1 rounded-lg text-xs font-mono transition-all ${
+                basemap === 'satellite'
+                  ? 'bg-cyan-500 text-slate-950 font-bold shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              Satellite
+            </button>
+            <button
+              onClick={() => setBasemap('dark')}
+              className={`px-2 py-1 rounded-lg text-xs font-mono transition-all ${
+                basemap === 'dark'
+                  ? 'bg-cyan-500 text-slate-950 font-bold shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              Dark Ocean
+            </button>
+          </div>
         </div>
       </div>
 
@@ -212,12 +249,32 @@ export const AnomalyMapPage: React.FC<AnomalyMapPageProps> = ({
         >
           <RecenterMap lat={focusedLocation.lat} lng={focusedLocation.lng} />
 
-          {/* Dark Ocean Basemap TileLayer (Free, No API Key Required) */}
-          <TileLayer
-            attribution='&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Esri, DeLorme, NAVTEQ, OpenStreetMap'
-            url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-            maxZoom={16}
-          />
+          {/* Official Leaflet OpenStreetMap Basemap TileLayer (Default) */}
+          {basemap === 'osm' && (
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maxZoom={19}
+            />
+          )}
+
+          {/* Esri World Satellite Imagery Basemap */}
+          {basemap === 'satellite' && (
+            <TileLayer
+              attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and GIS User Community'
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              maxZoom={18}
+            />
+          )}
+
+          {/* Dark Ocean Basemap TileLayer */}
+          {basemap === 'dark' && (
+            <TileLayer
+              attribution='&copy; <a href="https://www.esri.com/">Esri</a> &mdash; Esri, DeLorme, NAVTEQ, OpenStreetMap'
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+              maxZoom={16}
+            />
+          )}
 
           {/* Towfish Survey Path Line */}
           <Polyline
