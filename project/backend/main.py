@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(
-    title="OceanScan AI - Marine Debris & Sonar Anomaly Detection Engine",
+    title="AQUORA - Marine Debris & Sonar Anomaly Detection Engine",
     description="Smart India Hackathon AI-Powered Automated Underwater Marine Intelligence Platform",
     version="2.0.0",
     lifespan=lifespan
@@ -60,7 +60,7 @@ app.include_router(settings.router)
 def health_check():
     return {
         "status": "online",
-        "platform": "OceanScan AI Marine Intelligence Platform",
+        "platform": "AQUORA AI Marine Intelligence Platform",
         "problem_statement": "AI-Powered Automated Underwater Marine Debris and Anomaly Detection System using Side-Scan Sonar Imagery",
         "hackathon": "Smart India Hackathon (SIH)",
         "version": "2.0.0",

@@ -1,4 +1,4 @@
-# AquaLens / OceanScan AI
+# AQUORA
 
 > **AI-Powered Automated Underwater Marine Debris & Sonar Anomaly Detection System**  
 > Developed for Side-Scan Sonar Imagery intelligence, bathymetric mapping, and hazard detection.

@@ -52,7 +52,7 @@ export const AboutTechPage: React.FC<AboutTechPageProps> = ({ setActiveTab }) =>
           <span>SYSTEM ARCHITECTURE & METHODOLOGY</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-black text-white font-sans">
-          OceanScan AI Deep Technology Pipeline
+          AQUORA AI Deep Technology Pipeline
         </h1>
         <p className="text-sm text-slate-300">
           Built for the Smart India Hackathon problem statement: AI-Powered Automated Underwater Marine Debris and Anomaly Detection System using Side-Scan Sonar Imagery.

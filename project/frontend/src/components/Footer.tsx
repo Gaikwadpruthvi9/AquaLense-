@@ -37,7 +37,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
             <div className="flex items-center gap-2">
               <Anchor className="w-5 h-5 text-cyan-400" />
               <span className="font-extrabold text-lg text-slate-100 font-mono">
-                OceanScan<span className="text-cyan-400">.AI</span>
+                AQUORA<span className="text-cyan-400">.AI</span>
               </span>
             </div>
             <p className="text-slate-300 leading-relaxed max-w-md">

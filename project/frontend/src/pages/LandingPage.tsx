@@ -101,7 +101,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </h1>
                 
                 <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-xl">
-                  OceanScan AI automatically detects, classifies, maps, and prioritizes marine debris and underwater anomalies from Side-Scan Sonar imagery.
+                  AQUORA AI automatically detects, classifies, maps, and prioritizes marine debris and underwater anomalies from Side-Scan Sonar imagery.
                 </p>
               </div>
 

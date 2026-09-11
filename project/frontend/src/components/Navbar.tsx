@@ -70,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-400 font-mono">
-                  OceanScan<span className="text-cyan-400 font-sans">.AI</span>
+                  AQUORA<span className="text-cyan-400 font-sans">.AI</span>
                 </span>
                 <span className="hidden md:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-cyan-950 text-cyan-400 border border-cyan-500/30">
                   v2.0 • SSS
