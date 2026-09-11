@@ -128,8 +128,15 @@ def run_ai_analysis(payload: AnalyzeRequest, db: Session = Depends(get_db)):
         "depth_m": scan.depth_m if scan else 42.0
     }
 
+    img_path = None
+    if scan and scan.file_name:
+        candidate = os.path.join(STATIC_DIR, scan.file_name)
+        if os.path.exists(candidate):
+            img_path = candidate
+
     detections = ai_engine.analyze_sonar_image(
         image_metadata=metadata,
+        image_path=img_path,
         preset_type=payload.preset_type,
         confidence_threshold=payload.confidence_threshold,
         sensitivity=payload.sensitivity,

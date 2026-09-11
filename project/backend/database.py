@@ -3,8 +3,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_DB_PATH = os.path.join(BASE_DIR, "oceanscan.db")
+
 # Database URL - uses PostgreSQL if configured, otherwise falls back to SQLite
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./oceanscan.db")
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DEFAULT_DB_PATH}")
 
 # If PostgreSQL is configured with standard postgres:// prefix, adapt for modern SQLAlchemy
 if DATABASE_URL.startswith("postgres://"):

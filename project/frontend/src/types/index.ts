@@ -6,7 +6,17 @@ export type ObjectCategory =
   | 'Plastic Debris'
   | 'Ship Debris'
   | 'Rock / Natural Object'
-  | 'Unknown Anomaly';
+  | 'Unknown Anomaly'
+  | 'Bottle'
+  | 'Can'
+  | 'Chain'
+  | 'Drink-carton'
+  | 'Hook'
+  | 'Propeller'
+  | 'Shampoo-bottle'
+  | 'Standing-bottle'
+  | 'Tire'
+  | 'Valve';
 
 export interface BoundingBox {
   x: number; // 0.0 to 1.0
