@@ -23,6 +23,10 @@ project.zip
 # Environment & IDE
 .env
 .env.local
+.npmrc
+.npm-cache/
+.pip-cache/
+tmp/
 .vscode/
 .idea/
 .DS_Store
