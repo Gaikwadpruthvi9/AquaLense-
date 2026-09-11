@@ -180,6 +180,13 @@ def run_ai_analysis(payload: AnalyzeRequest, db: Session = Depends(get_db)):
         d["id"] = det_record.id
         d["scan_code"] = scan.scan_code if scan else "SON-001"
         d["image_url"] = scan.file_path if scan else "/static/sonar_images/son-001_fishing_net.jpg"
+        if "bbox" not in d or not isinstance(d["bbox"], dict):
+            d["bbox"] = {
+                "x": float(d.get("bbox_x", 0.32)),
+                "y": float(d.get("bbox_y", 0.26)),
+                "w": float(d.get("bbox_width", 0.36)),
+                "h": float(d.get("bbox_height", 0.38))
+            }
         saved_detections.append(d)
 
     # Return structured AI response

@@ -506,6 +506,12 @@ class SonarAIEngine:
                     "estimated_depth": float(depth_m),
                     "latitude": float(round(lat, 5)),
                     "longitude": float(round(lng, 5)),
+                    "bbox": {
+                        "x": float(det["bbox"]["bbox_x"]),
+                        "y": float(det["bbox"]["bbox_y"]),
+                        "w": float(det["bbox"]["bbox_width"]),
+                        "h": float(det["bbox"]["bbox_height"])
+                    },
                     "bbox_x": float(det["bbox"]["bbox_x"]),
                     "bbox_y": float(det["bbox"]["bbox_y"]),
                     "bbox_width": float(det["bbox"]["bbox_width"]),
@@ -562,7 +568,7 @@ class SonarAIEngine:
             bbox = {"x": 0.38, "y": 0.30, "w": 0.28, "h": 0.30}
 
         size_m2 = width_m * length_m
-        size_str = f"{width_m:.1f}m × {length_m:.1f}m"
+        size_str = f"{width_m:.1f}m x {length_m:.1f}m"
 
         risk_data = self.calculate_risk_score(
             object_type=target_class,
@@ -577,17 +583,23 @@ class SonarAIEngine:
         return [{
             "detection_code": f"DET-{random.randint(100, 999)}",
             "object_type": target_class,
-            "confidence": confidence,
+            "confidence": float(confidence),
             "risk_level": risk_data["risk_level"],
             "risk_score": risk_data["risk_score"],
             "estimated_size": size_str,
-            "estimated_depth": depth_m,
-            "latitude": round(lat, 5),
-            "longitude": round(lng, 5),
-            "bbox_x": bbox["x"],
-            "bbox_y": bbox["y"],
-            "bbox_width": bbox["w"],
-            "bbox_height": bbox["h"],
+            "estimated_depth": float(depth_m),
+            "latitude": float(round(lat, 5)),
+            "longitude": float(round(lng, 5)),
+            "bbox": {
+                "x": float(bbox["x"]),
+                "y": float(bbox["y"]),
+                "w": float(bbox["w"]),
+                "h": float(bbox["h"])
+            },
+            "bbox_x": float(bbox["x"]),
+            "bbox_y": float(bbox["y"]),
+            "bbox_width": float(bbox["w"]),
+            "bbox_height": float(bbox["h"]),
             "acoustic_shadow_len_m": round(length_m * 1.4, 1),
             "backscatter_intensity_db": round(random.uniform(-24.0, -12.0), 1),
             "entropy_score": round(random.uniform(0.68, 0.89), 2),

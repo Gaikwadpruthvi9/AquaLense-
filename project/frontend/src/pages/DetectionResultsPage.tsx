@@ -228,7 +228,7 @@ export const DetectionResultsPage: React.FC<DetectionResultsPageProps> = ({
                 <span>GEOGRAPHIC FIX:</span>
               </div>
               <span className="text-cyan-300 font-bold">
-                {activeDet.latitude.toFixed(4)}° N, {activeDet.longitude.toFixed(4)}° E
+                {(Number(activeDet.latitude) || 11.0168).toFixed(4)}° N, {(Number(activeDet.longitude) || 76.9558).toFixed(4)}° E
               </span>
             </div>
 

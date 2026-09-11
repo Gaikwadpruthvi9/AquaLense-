@@ -81,12 +81,36 @@ export function App() {
   };
 
   const handleAnalysisComplete = (result: any) => {
-    if (result && result.primary_detection) {
-      setCurrentDetection(result.primary_detection);
-      if (result.detections) {
-        setAllDetections(result.detections);
-      }
+    if (result) {
+      const primary = result.primary_detection || (result.detections && result.detections[0]) || result;
+      const normalizedPrimary: Detection = {
+        ...primary,
+        latitude: Number(primary.latitude) || 11.0168,
+        longitude: Number(primary.longitude) || 76.9558,
+        bbox: primary.bbox || {
+          x: primary.bbox_x ?? 0.32,
+          y: primary.bbox_y ?? 0.26,
+          w: primary.bbox_width ?? 0.36,
+          h: primary.bbox_height ?? 0.38
+        }
+      };
+      setCurrentDetection(normalizedPrimary);
+
+      const rawDets = (result.detections && result.detections.length > 0) ? result.detections : [normalizedPrimary];
+      const normalizedDetections = rawDets.map((d: any) => ({
+        ...d,
+        latitude: Number(d.latitude) || 11.0168,
+        longitude: Number(d.longitude) || 76.9558,
+        bbox: d.bbox || {
+          x: d.bbox_x ?? 0.32,
+          y: d.bbox_y ?? 0.26,
+          w: d.bbox_width ?? 0.36,
+          h: d.bbox_height ?? 0.38
+        }
+      }));
+      setAllDetections(normalizedDetections);
     }
+    setActiveTab('results');
     confetti({
       particleCount: 70,
       spread: 70,

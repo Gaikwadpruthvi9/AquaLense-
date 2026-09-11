@@ -230,10 +230,16 @@ export const SonarCanvas: React.FC<SonarCanvasProps> = ({
             const isSelected = selectedDetection?.detection_code === det.detection_code;
             const riskColor = getRiskColor(det.risk_level);
             
-            const leftPct = (det.bbox.x * 100);
-            const topPct = (det.bbox.y * 100);
-            const widthPct = (det.bbox.w * 100);
-            const heightPct = (det.bbox.h * 100);
+            const rawBox = det?.bbox || {
+              x: (det as any)?.bbox_x ?? 0.32,
+              y: (det as any)?.bbox_y ?? 0.26,
+              w: (det as any)?.bbox_width ?? 0.36,
+              h: (det as any)?.bbox_height ?? 0.38
+            };
+            const leftPct = (Number(rawBox.x) || 0.32) * 100;
+            const topPct = (Number(rawBox.y) || 0.26) * 100;
+            const widthPct = (Number(rawBox.w) || 0.36) * 100;
+            const heightPct = (Number(rawBox.h) || 0.38) * 100;
 
             return (
               <div
