@@ -547,8 +547,42 @@ class SonarAIEngine:
         known_similarity = round(random.uniform(0.12, 0.28), 2) if is_unknown else round(random.uniform(0.85, 0.97), 2)
         ood_score = round(random.uniform(0.72, 0.91), 2) if is_unknown else round(random.uniform(0.05, 0.18), 2)
 
-        # Default bounding box and size based on target class
-        if target_class in ["Ship Debris", "Propeller"]:
+        # 3. Dynamic Acoustic Feature Extraction for Uploaded/Custom Images
+        # If an actual image file exists, compute real bounding box from image backscatter highlights
+        if image_path and os.path.exists(image_path):
+            try:
+                import cv2
+                img_gray = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+                if img_gray is not None:
+                    h_img, w_img = img_gray.shape
+                    clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+                    enhanced = clahe.apply(img_gray)
+                    thresh_val = np.percentile(enhanced, 93)
+                    _, thresh = cv2.threshold(enhanced, thresh_val, 255, cv2.THRESH_BINARY)
+                    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                    valid_cnts = [c for c in contours if cv2.contourArea(c) > 40]
+                    if valid_cnts:
+                        best_c = max(valid_cnts, key=cv2.contourArea)
+                        bx, by, bw, bh = cv2.boundingRect(best_c)
+                        norm_x = max(0.05, min(0.90, round(float(bx / w_img), 3)))
+                        norm_y = max(0.05, min(0.90, round(float(by / h_img), 3)))
+                        norm_w = max(0.10, min(0.85 - norm_x, round(float(bw / w_img), 3)))
+                        norm_h = max(0.08, min(0.85 - norm_y, round(float(bh / h_img), 3)))
+                        bbox = {"x": norm_x, "y": norm_y, "w": norm_w, "h": norm_h}
+                        width_m = round(norm_w * 35.0, 1)
+                        length_m = round(norm_h * 25.0, 1)
+                    else:
+                        bbox = {"x": 0.35, "y": 0.28, "w": 0.30, "h": 0.32}
+                        width_m, length_m = 6.2, 3.4
+                else:
+                    bbox = {"x": 0.38, "y": 0.30, "w": 0.28, "h": 0.30}
+                    width_m, length_m = 5.0, 3.0
+            except Exception as e:
+                print(f"[AQUORA AI] Acoustic contour error: {e}")
+                bbox = {"x": 0.36, "y": 0.30, "w": 0.28, "h": 0.30}
+                width_m, length_m = 5.0, 3.0
+        # 4. Contextual Fallback for sample presets
+        elif target_class in ["Ship Debris", "Propeller"]:
             width_m, length_m = round(random.uniform(12.0, 22.0), 1), round(random.uniform(6.0, 10.0), 1)
             bbox = {"x": 0.28, "y": 0.24, "w": 0.42, "h": 0.44}
         elif target_class in ["Fishing Net", "Chain", "Tire"]:
